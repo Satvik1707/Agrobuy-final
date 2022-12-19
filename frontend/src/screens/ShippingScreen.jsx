@@ -32,10 +32,10 @@ const ShippingScreen = ({ history }) => {
             <Col>
               <Form.Check
                 type="radio"
-                label="Patiala"
+                label="Patiala (0x9803504EF43e31fd4c91e7e4E175AD2280826faa)"
                 id="Metamask"
                 name="paymentMethod"
-                value="Patiala"
+                value="Patiala (0x9803504EF43e31fd4c91e7e4E175AD2280826faa)"
                 onChange={
                   (e) => {setAddress(e.target.value)}
                   // setCity(e.target.value),

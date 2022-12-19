@@ -99,10 +99,19 @@ const AddWarehouse = () => {
               placeholder="Enter Pincode"
             />
           </Form.Group>
+          <Form.Group controlId="formGridAddress1">
+            <Form.Label>Wallet Address</Form.Label>
+            <Form.Control
+              type="text"
+              value={description}
+              onChange={(e) => setdescription(e.target.value)}
+              placeholder="Enter wallet address"
+            />
+          </Form.Group>
         </Row>
 
         <button className="btn" style={{'background-color':'#22A39F', 'color':'#000000'}}>
-          Add New
+          Add New Warehouse
         </button>
       </Form>
     </div>

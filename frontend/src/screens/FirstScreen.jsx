@@ -2,8 +2,8 @@ import React from "react";
 import "../App.css";
 const FirstScreen = () => {
   return (
-    <div>
-      <div className="c1">
+    <div className="my-4">
+      <div>
         <div className="leftpane">
           <a href="/farmer">
             <button className="button">Farmer's Portal</button>

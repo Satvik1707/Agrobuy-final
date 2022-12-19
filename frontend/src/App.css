@@ -1,9 +1,18 @@
 .my-3 {
-  height: 80vh;
+  height:100%;
   width: 100%;
   background-image: url("https://i.postimg.cc/8zhHxWMt/bg.webp");
   background-repeat: no-repeat;
   background-size: cover; 
+}
+.my-4{
+  height:100% !important;
+  width: 100%;
+  background-image: url("https://i.postimg.cc/8zhHxWMt/bg.webp");
+  background-repeat: no-repeat;
+  background-size: cover; 
+  padding-top: 30%;
+  padding-bottom: 30%;
 }
 
 img {

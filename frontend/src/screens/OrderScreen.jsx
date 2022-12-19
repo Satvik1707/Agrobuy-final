@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ORDER_PAY_RESET } from "../constants/orderConstant";
 import { Row, Col, ListGroup, Image, Card, CarouselItem } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getOrderDetails, payOrder } from "../actions/orderAction";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/shared/Message";
@@ -35,6 +35,7 @@ const OrderScreen = ({ match }) => {
     );
   }
 
+
   const successPaymentHandler = (paymentResult) => {
     // console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
@@ -42,15 +43,17 @@ const OrderScreen = ({ match }) => {
 
   const oneRupeeInEth = 0.000010219276555042911
 
+  const history = useHistory();
 
   const handlePayAmount = async () => {
     const provider = new ethers.providers.Web3Provider(ethereum)
     const signer = provider.getSigner()
     const to = '0x9803504EF43e31fd4c91e7e4E175AD2280826faa'
-
     const ethValue = (order.totalPrice || 1150) * oneRupeeInEth
-
     await signer.sendTransaction({to, value: ethers.utils.parseEther(ethValue.toString())})
+    history.push('/profile');
+    
+
   };
 
   // console.log(successPaymentHandler);

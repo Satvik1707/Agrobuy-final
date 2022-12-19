@@ -5,7 +5,7 @@ const footer = () => {
     <>
       <footer
         class="text-center text-lg-start p-2 text-black"
-        style={{ "background-color": "#22A39F" }}
+        style={{ "background-color": "#22A39F"}}
       >
         <section class="">
           <div class="container text-center text-md-start mt-5">

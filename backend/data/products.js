@@ -1,0 +1,48 @@
+const products = [
+  {
+    name: "Wheat (10kg)",
+    image: "/images/wheat.jpeg",
+    description: "Wheat Seeds",
+    brand: "Imported",
+    category: "Seeds",
+    price: 200,
+    countInStock: 10,
+    rating: 4.5,
+    numReviews: 12,
+  },
+  {
+    name: "Rose (1kg)",
+    image: "/images/rose.jpeg",
+    description: "Rose Seeds",
+    brand: "Imported",
+    category: "Seeds",
+    price: 500,
+    countInStock: 7,
+    rating: 4.0,
+    numReviews: 8,
+  },
+  {
+    name: "Sunflower (1kg)",
+    image: "/images/sunflower.jpeg",
+    description: "Wheat Seeds",
+    brand: "Imported",
+    category: "Seeds",
+    price: 300,
+    countInStock: 5,
+    rating: 3,
+    numReviews: 12,
+  },
+  {
+    name: "Weed (1 kg)",
+    image: "/images/weed.jpeg",
+    description: "Weed",
+    brand: "Imported",
+    category: "Seeds",
+    price: 1000,
+    countInStock: 7,
+    rating: 3.5,
+    numReviews: 10,
+  },
+];
+
+module.exports = products;

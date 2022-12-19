@@ -1,0 +1,111 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.0;
+
+contract FarmerContract {
+
+    struct FarmerDetails {
+        uint id
+        string name;
+        string locality;
+    }
+    struct WarehouseDetails {
+        uint id;
+        string name;
+        string locality;
+        bool active;
+    }
+
+    enum Status{ PENDING, STARTED, ACCEPTEDED, INTRANSIT_REQ, INTRANSIT_ACK, DELIVERED_REQ, DELIVERED_ACK }
+
+    event NewOrder(address indexed farmer, uint id);
+
+    struct Order {
+        uint noOfSeeds;
+        string seedName;
+        uint fertilisers;
+        string fertilisersName;
+        Status status;
+        address warehouse;
+        uint amount;
+    }
+
+    address public owner;
+
+    mapping(address => FarmerDetails) public farmerDetails;
+    mapping(address => Order) public orders;
+    mapping(address => WarehouseDetails) public apporvedWarehouses;
+
+    constructor() {
+        owner = msg.sender;
+    }
+    modifier onlyOwner() {
+        require(msg.sender == owner, "ONLY_OWNER");
+        _;
+    }
+    modifier onlyWarehouse() {
+        require(apporvedWarehouses[msg.sender].active, "ONLY_OWNER");
+        _;
+    }
+
+    function addWarehouse(address warehouse, uint id, string memory name, string memory locality) onlyOwner external {
+        apporvedWarehouses[warehouse] = WarehouseDetails({
+            id: id,
+            name: name,
+            locality: locality,
+            active: true
+        });
+    }
+    function removeWarehouse(address warehouse) onlyOwner external {
+        delete apporvedWarehouses[warehouse];
+    }
+
+    function addOrder(uint id, uint noOfSeeds, string memory seedName, uint fertilisers, string memory fertilisersName) external payable {
+        Order storage order = orders[msg.sender];
+        require(order.status == Status.PENDING, "ORDER_NOT_STARTED_OR_COMPLETE");
+        orders[msg.sender] = Order({
+            noOfSeeds: noOfSeeds,
+            seedName: seedName,
+            fertilisers: fertilisers,
+            fertilisersName: fertilisersName,
+            status: Status.STARTED,
+            warehouse: address(0),
+            amount: msg.value
+        });
+        emit NewOrder(msg.sender, id);
+    }
+
+    function acceptOrder(address farmer) onlyWarehouse external {
+        Order storage order = orders[farmer];
+        require(order.status == Status.STARTED, "ORDER_ALREADY_STARTED");
+        order.status = Status.ACCEPTEDED;
+        order.warehouse = msg.sender;
+    }
+
+    function reqTransit(address farmer) onlyWarehouse external {
+        Order storage order = orders[farmer];
+        require(order.status == Status.ACCEPTEDED, "ORDER_NOT_ACCEPTED");
+        order.status = Status.INTRANSIT_REQ;
+    }
+
+    function ackTransit() external {
+        Order storage order = orders[msg.sender];
+        require(order.status == Status.INTRANSIT_REQ, "INVALID_STATUS");
+        order.status = Status.INTRANSIT_ACK;
+    }
+
+    function reqDelivery(address farmer) onlyWarehouse external {
+        Order storage order = orders[farmer];
+        require(order.status == Status.INTRANSIT_ACK, "ORDER_NOT_ACCEPTED");
+        order.status = Status.DELIVERED_REQ;
+    }
+
+    function ackDelivery() external returns(bool success) {
+        Order storage order = orders[msg.sender];
+        require(order.status == Status.DELIVERED_REQ, "INVALID_STATUS");
+        order.status = Status.DELIVERED_ACK;
+        delete orders[msg.sender];
+        (success, ) = order.warehouse.call{value: order.amount}("");
+        require(success, "TRANSFER FAILED");
+    }
+
+}
